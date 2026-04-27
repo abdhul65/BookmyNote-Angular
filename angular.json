@@ -1,0 +1,77 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "BookmyNote": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": { "style": "scss" }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/BookmyNote",
+            "index":      "src/index.html",
+            "browser":    "src/main.ts",
+            "polyfills":  ["zone.js"],
+            "tsConfig":   "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets":  ["src/favicon.ico", "src/assets"],
+            "styles":  [
+              "src/styles.scss",
+              "node_modules/leaflet/dist/leaflet.css"
+            ],
+            "scripts": [
+              "node_modules/leaflet/dist/leaflet.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/environment/environment.ts",
+                  "with": "src/app/environment/environment.prod.ts"
+                }
+              ],
+              "budgets": [
+                { "type": "initial", "maximumWarning": "500kb", "maximumError": "1mb" },
+                { "type": "anyComponentStyle","maximumWarning": "6kb","maximumError": "10kb" }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production":  { "buildTarget": "BookmyNote:build:production" },
+            "development": { "buildTarget": "BookmyNote:build:development" }
+          },
+          
+          "defaultConfiguration": "development",
+          "options": {
+            "ssl": true,
+            "sslKey": "cert.key",
+            "sslCert": "cert.crt",
+            "host": "0.0.0.0",
+            "port": 4200
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "49015e28-0cbb-4b2b-b769-176a364635ea"
+  }
+}
